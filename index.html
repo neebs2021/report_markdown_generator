@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-gradients">
+        <div class="gradient-1"></div>
+        <div class="gradient-2"></div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <h1>Markdown Generator</h1>
+            <p class="subtitle">Generate clean updates for your team</p>
+        </header>
+
+        <main>
+            <!-- Toggle Switch -->
+            <div class="toggle-container">
+                <div class="toggle-track">
+                    <button id="btn-assigned" class="toggle-option active">Assigned Tasks</button>
+                    <button id="btn-completed" class="toggle-option">Completed Tasks</button>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions-bar">
+                <button id="btn-import" class="icon-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Import
+                </button>
+                <button id="btn-load-assigned" class="icon-btn hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Load from Assigned
+                </button>
+            </div>
+
+            <!-- Projects List -->
+            <div id="projects-list" class="projects-list">
+                <!-- Projects will be injected here -->
+            </div>
+
+            <!-- Add Project Button -->
+            <button id="btn-add-project" class="primary-btn full-width">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Project
+            </button>
+
+            <!-- Output Section -->
+            <div class="output-card">
+                <div class="output-header">
+                    <h2>Generated Markdown</h2>
+                    <button id="btn-copy" class="icon-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        Copy
+                    </button>
+                </div>
+                <div class="output-content">
+                    <pre id="markdown-output"></pre>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="import-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Import Markdown</h3>
+            <textarea id="import-text" placeholder="Paste your markdown here..."></textarea>
+            <div class="modal-actions">
+                <button id="btn-cancel-import" class="text-btn">Cancel</button>
+                <button id="btn-confirm-import" class="primary-btn">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
