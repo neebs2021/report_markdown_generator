@@ -208,7 +208,8 @@ h1 {
     font-family: var(--font-family);
     font-size: 1.25rem;
     font-weight: 600;
-    width: 100%;
+    flex: 1;
+        margin-right: 12px;
     padding: 4px 0;
 }
 

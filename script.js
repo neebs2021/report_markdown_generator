@@ -2,9 +2,9 @@ class App {
     constructor() {
         this.projects = [];
         this.completedProjects = [];
-        this.mode = 'assigned'; // 'assigned' or 'completed'
+        this.mode = 'assigned';
         
-        // Initialize with one empty project if nothing exists
+
         this.projects.push({
             id: Date.now().toString(),
             name: '',
@@ -47,7 +47,7 @@ class App {
         this.btnLoadAssigned.addEventListener('click', () => this.loadAssignedToCompleted());
     }
 
-    // State Management
+
     get currentProjects() {
         return this.mode === 'assigned' ? this.projects : this.completedProjects;
     }
@@ -55,7 +55,7 @@ class App {
     setMode(newMode) {
         this.mode = newMode;
         
-        // Update styling
+
         if (this.mode === 'assigned') {
             this.btnAssigned.classList.add('active');
             this.btnCompleted.classList.remove('active');
@@ -85,7 +85,7 @@ class App {
 
     updateProjectName(index, name) {
         this.currentProjects[index].name = name;
-        this.generateMarkdown(); // Re-gen markdown only, input keeps focus
+        this.generateMarkdown();
     }
 
     addTask(projectIndex) {
@@ -113,7 +113,7 @@ class App {
     }
 
     loadAssignedToCompleted() {
-        // Deep copy assigned projects to completed, resetting completion status
+
         this.completedProjects = this.projects.map(p => ({
             id: p.id,
             name: p.name,
@@ -126,7 +126,7 @@ class App {
         this.render();
     }
 
-    // Rendering
+
     render() {
         this.projectsList.innerHTML = '';
         
@@ -134,7 +134,7 @@ class App {
             const projectCard = document.createElement('div');
             projectCard.className = 'project-card';
             
-            // Header
+
             const header = document.createElement('div');
             header.className = 'project-header';
             
@@ -154,7 +154,7 @@ class App {
             header.appendChild(invalidBtn);
             projectCard.appendChild(header);
 
-            // Tasks
+
             const taskList = document.createElement('div');
             taskList.className = 'task-list';
 
@@ -162,7 +162,7 @@ class App {
                 const taskItem = document.createElement('div');
                 taskItem.className = 'task-item';
 
-                // Checkbox (Only visible in Completed mode)
+
                 if (this.mode === 'completed') {
                     const checkboxContainer = document.createElement('div');
                     checkboxContainer.className = 'task-checkbox-container';
@@ -196,10 +196,10 @@ class App {
 
             projectCard.appendChild(taskList);
 
-            // Add Task Button
+
             const addTaskBtn = document.createElement('button');
             addTaskBtn.className = 'add-task-btn';
-            addTaskBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add Task';
+            addTaskBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add Task';
             addTaskBtn.onclick = () => this.addTask(pIndex);
             
             projectCard.appendChild(addTaskBtn);
@@ -249,7 +249,7 @@ class App {
         this.markdownOutput.textContent = markdown.trim();
     }
 
-    // Modal / Import
+
     openModal() {
         this.modal.classList.remove('hidden');
         this.importText.value = '';
@@ -271,10 +271,16 @@ class App {
             line = line.trim();
             if (!line) return;
 
-            // Match **Project Name** (simplified regex)
+
             const projectMatch = line.match(/^\*\*(.*?)\*\*$/);
-            // Avoid matching headers or dates if simple check
-            const isHeader = line.includes('Assigned Tasks') || line.includes('Completed Tasks') || /^\*\*\d/.test(line);
+
+            // Enhanced check to ignore headers, dates with digits, or date strings like "Friday, December 19"
+            const isDateString = /^\*\*\w+,\s+\w+\s+\d{1,2}(,\s+\d{4})?\*\*$/.test(line) || // matches "Friday, December 19" or "Friday, December 19, 2025"
+                /^\*\*\d/.test(line) || // matches "**13 December**" (starts with digit)
+                /^\*\*\d+\s+\w+\*\*$/.test(line) || // matches "**13 December**" explicit
+                /^\*\*\w+\s+\d+\*\*$/.test(line); // matches "**December 13**"
+
+            const isHeader = line.includes('Assigned Tasks') || line.includes('Completed Tasks') || isDateString;
 
             if (projectMatch && !isHeader) {
                 currentProject = {
@@ -326,7 +332,6 @@ class App {
     }
 }
 
-// Initialize App
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new App();
 });
