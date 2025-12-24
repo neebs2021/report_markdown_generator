@@ -1,5 +1,9 @@
 class App {
     constructor() {
+        // Emoji constants for task status
+        this.WHITE_CHECK_MARK = ':white_check_mark:';
+        this.LARGE_YELLOW_SQUARE = ':large_yellow_square:';
+        
         this.projects = [];
         this.completedProjects = [];
         this.mode = 'assigned';
@@ -237,7 +241,7 @@ class App {
                     markdown += `**${project.name}**\n`;
                     project.tasks.forEach(task => {
                         if (task.text) {
-                            const checkMark = task.isCompleted ? ':white_check_mark:' : ':large_yellow_square:';
+                            const checkMark = task.isCompleted ? this.WHITE_CHECK_MARK : this.LARGE_YELLOW_SQUARE;
                             markdown += `- ${task.text} ${checkMark}\n`;
                         }
                     });
@@ -300,12 +304,13 @@ class App {
                 } else if (taskText.startsWith('[ ]')) {
                     taskText = taskText.substring(3).trim();
                 }
+                
                 // Handle new emoji format at the end
-                else if (taskText.endsWith(':white_check_mark:')) {
+                if (taskText.endsWith(this.WHITE_CHECK_MARK)) {
                     isCompleted = true;
-                    taskText = taskText.substring(0, taskText.length - ':white_check_mark:'.length).trim();
-                } else if (taskText.endsWith(':large_yellow_square:')) {
-                    taskText = taskText.substring(0, taskText.length - ':large_yellow_square:'.length).trim();
+                    taskText = taskText.substring(0, taskText.length - this.WHITE_CHECK_MARK.length).trim();
+                } else if (taskText.endsWith(this.LARGE_YELLOW_SQUARE)) {
+                    taskText = taskText.substring(0, taskText.length - this.LARGE_YELLOW_SQUARE.length).trim();
                 }
 
                 currentProject.tasks.push({
