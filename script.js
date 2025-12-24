@@ -237,8 +237,8 @@ class App {
                     markdown += `**${project.name}**\n`;
                     project.tasks.forEach(task => {
                         if (task.text) {
-                            const checkMark = task.isCompleted ? '[x]' : '[ ]';
-                            markdown += `- ${checkMark} ${task.text}\n`;
+                            const checkMark = task.isCompleted ? ':white_check_mark:' : ':large_yellow_square:';
+                            markdown += `- ${task.text} ${checkMark}\n`;
                         }
                     });
                     markdown += '\n';
@@ -293,11 +293,19 @@ class App {
                 let taskText = line.substring(1).trim();
                 let isCompleted = false;
 
+                // Handle old format: [x] or [ ]
                 if (taskText.startsWith('[x]')) {
                     isCompleted = true;
                     taskText = taskText.substring(3).trim();
                 } else if (taskText.startsWith('[ ]')) {
                     taskText = taskText.substring(3).trim();
+                }
+                // Handle new emoji format at the end
+                else if (taskText.endsWith(':white_check_mark:')) {
+                    isCompleted = true;
+                    taskText = taskText.substring(0, taskText.length - ':white_check_mark:'.length).trim();
+                } else if (taskText.endsWith(':large_yellow_square:')) {
+                    taskText = taskText.substring(0, taskText.length - ':large_yellow_square:'.length).trim();
                 }
 
                 currentProject.tasks.push({
